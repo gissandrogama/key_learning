@@ -24,6 +24,15 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+# Guardian
+config :key_learning, KeyLearning.Guardian,
+  issuer: "key_learning",
+  secret_key: "eGDnyl8k31h+Z1suxmJuIbUDJ+R5nlkLYQDIn8VK9DGQpDQTkd1244235RSR7TR3"
+
+config :key_learning, KeyLearningWeb.AuthAccessPipelinePlug,
+  module: KeyLearning.Guardian,
+  error_handler: KeyLearningWeb.AuthErrorHandlerPlug
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
