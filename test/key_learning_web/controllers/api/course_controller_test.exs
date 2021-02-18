@@ -1,4 +1,4 @@
-defmodule KeyLearningWeb.CourseControllerTest do
+defmodule KeyLearningWeb.Api.CourseControllerTest do
   use KeyLearningWeb.ConnCase
 
   alias KeyLearning.School
@@ -25,17 +25,18 @@ defmodule KeyLearningWeb.CourseControllerTest do
 
   describe "index" do
     test "lists all courses", %{conn: conn} do
-      conn = get(conn, Routes.course_path(conn, :index))
+      conn = get(conn, Routes.api_course_path(conn, :index))
       assert json_response(conn, 200)["data"] == []
     end
   end
 
   describe "create course" do
+    setup :register_and_sign_in_for_jwt
     test "renders course when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.course_path(conn, :create), course: @create_attrs)
+      conn = post(conn, Routes.api_course_path(conn, :create), course: @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
-      conn = get(conn, Routes.course_path(conn, :show, id))
+      conn = get(conn, Routes.api_course_path(conn, :show, id))
 
       assert %{
                "id" => id,
@@ -45,19 +46,19 @@ defmodule KeyLearningWeb.CourseControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.course_path(conn, :create), course: @invalid_attrs)
+      conn = post(conn, Routes.api_course_path(conn, :create), course: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
 
   describe "update course" do
-    setup [:create_course]
+    setup [:create_course, :register_and_sign_in_for_jwt]
 
     test "renders course when data is valid", %{conn: conn, course: %Course{id: id} = course} do
-      conn = put(conn, Routes.course_path(conn, :update, course), course: @update_attrs)
+      conn = put(conn, Routes.api_course_path(conn, :update, course), course: @update_attrs)
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
-      conn = get(conn, Routes.course_path(conn, :show, id))
+      conn = get(conn, Routes.api_course_path(conn, :show, id))
 
       assert %{
                "id" => id,
@@ -67,20 +68,20 @@ defmodule KeyLearningWeb.CourseControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, course: course} do
-      conn = put(conn, Routes.course_path(conn, :update, course), course: @invalid_attrs)
+      conn = put(conn, Routes.api_course_path(conn, :update, course), course: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
 
   describe "delete course" do
-    setup [:create_course]
+    setup [:create_course, :register_and_sign_in_for_jwt]
 
     test "deletes chosen course", %{conn: conn, course: course} do
-      conn = delete(conn, Routes.course_path(conn, :delete, course))
+      conn = delete(conn, Routes.api_course_path(conn, :delete, course))
       assert response(conn, 204)
 
       assert_error_sent 404, fn ->
-        get(conn, Routes.course_path(conn, :show, course))
+        get(conn, Routes.api_course_path(conn, :show, course))
       end
     end
   end
