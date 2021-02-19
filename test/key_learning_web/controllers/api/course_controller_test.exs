@@ -32,6 +32,7 @@ defmodule KeyLearningWeb.Api.CourseControllerTest do
 
   describe "create course" do
     setup :register_and_sign_in_for_jwt
+
     test "renders course when data is valid", %{conn: conn} do
       conn = post(conn, Routes.api_course_path(conn, :create), course: @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]

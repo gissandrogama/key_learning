@@ -9,6 +9,5 @@ defmodule KeyLearning.Repo.Migrations.CreateCourses do
 
       timestamps()
     end
-
   end
 end

@@ -11,8 +11,6 @@ defmodule KeyLearningWeb.Api.CourseView do
   end
 
   def render("course.json", %{course: course}) do
-    %{id: course.id,
-      name: course.name,
-      image_path: course.image_path}
+    %{id: course.id, name: course.name, image_path: course.image_path}
   end
 end

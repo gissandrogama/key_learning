@@ -54,7 +54,7 @@ defmodule KeyLearningWeb.ConnCase do
     %{conn: log_in_user(conn, user), user: user}
   end
 
-   @doc """
+  @doc """
   Setup helper that registers and logs in users.
 
       setup :register_and_log_in_user
