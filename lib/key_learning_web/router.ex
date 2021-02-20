@@ -26,7 +26,8 @@ defmodule KeyLearningWeb.Router do
   scope "/", KeyLearningWeb do
     pipe_through :browser
 
-    live "/", CourseLive, :index
+    live "/", CategoryLive, :index
+    live "/course", CourseLive, :index
   end
 
   # Other scopes may use custom stacks.
