@@ -7,7 +7,7 @@ echo "------------------------------------"
 echo "BRANCH=$BRANCH"
 if [ "$BRANCH" == "main" ]; then
   echo "Pushing HEAD to master branch on Gigalixir."
-  git push gigalixir HEAD:master
+  git push gigalixir main
   echo "Deploy completed."
 fi
 echo "Exiting.
