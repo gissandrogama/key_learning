@@ -27,7 +27,7 @@ config :logger, :console,
 # Guardian
 config :key_learning, KeyLearning.Guardian,
   issuer: "key_learning",
-  secret_key:  System.get_env("GUARDIAN_SECRET")
+  secret_key: System.get_env("GUARDIAN_SECRET")
 
 config :key_learning, KeyLearningWeb.AuthAccessPipelinePlug,
   module: KeyLearning.Guardian,
