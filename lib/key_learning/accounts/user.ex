@@ -45,6 +45,14 @@ defmodule KeyLearning.Accounts.User do
     |> validate_password(opts)
   end
 
+  def admin_registration_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:email, :password])
+    |> validate_email()
+    |> validate_password(opts)
+    |> put_change(:role, :admin)
+  end
+
   defp validate_email(changeset) do
     changeset
     |> validate_required([:email])
