@@ -1,0 +1,21 @@
+sudo: required
+language: elixir
+elixir:
+  - 1.11
+otp_release:
+  - 22.2.6
+
+addons:
+  postgres: "9.4"
+
+services:
+  - postgresql
+
+scripts:
+  - mix format --check-formatted --dry-run
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: bash ./deploy.sh
+  on:
+    branch: main
