@@ -1,6 +1,12 @@
 defmodule KeyLearning.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
+  import EctoEnum
+
+  defenum(RolesEnum, :role, [
+    :user,
+    :admin
+  ])
 
   @derive {Inspect, except: [:password]}
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -10,6 +16,7 @@ defmodule KeyLearning.Accounts.User do
     field :password, :string, virtual: true
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
+    field :role, RolesEnum, default: :user
 
     timestamps()
   end
