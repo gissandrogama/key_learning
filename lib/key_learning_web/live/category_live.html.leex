@@ -7,16 +7,23 @@
         <p><i class="fas fa-power-off"></i></p>
       </div>
 
-      <form action="" phx-change="search">
+      <form action="" phx-submit="search" phx-change="options-available">
         <input type="search"
                name="search"
                value="<%= @search %>"
                autocomplete="off"
+               list="matches"
                <%= if @loading, do: "readonly" %>
                placeholder="Type to find a course">
       </form>
     </nav>
   </header>
+
+  <datalist id="matches">
+    <%= for match <- @matches do %>
+      <option value="<%= match %>"><%= match %></option>
+    <% end %>
+  </datalist>
 
   <main>
     <h3>

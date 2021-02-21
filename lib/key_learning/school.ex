@@ -28,7 +28,6 @@ defmodule KeyLearning.School do
   end
 
   def list_courses(search) do
-    :timer.sleep(2000)
     search = "%#{search}%"
     query = from c in Course,
             join: l in Lecture,
@@ -71,6 +70,15 @@ defmodule KeyLearning.School do
     %Course{}
     |> Course.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:course_created)
+  end
+
+  def subscribe, do: Phoenix.PubSub.subscribe(KeyLearning.PubSub, "course_created")
+
+  defp broadcast({:error, _} = error, _), do: error
+  defp broadcast({:ok, course}, event) do
+    Phoenix.PubSub.broadcast!(KeyLearning.PubSub, "course_created", {event, course})
+    {:ok, course}
   end
 
   @doc """

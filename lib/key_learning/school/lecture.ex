@@ -17,7 +17,7 @@ defmodule KeyLearning.School.Lecture do
   @doc false
   def changeset(lecture, attrs) do
     lecture
-    |> cast(attrs, [:name, :duration, :description, :video_url, :course_id])
-    |> validate_required([:name, :duration, :description, :video_url, :course_id])
+    |> cast(attrs, [:name, :duration, :description, :video_url])
+    |> validate_required([:name, :duration, :description, :video_url])
   end
 end

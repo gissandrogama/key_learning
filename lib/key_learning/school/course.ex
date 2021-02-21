@@ -18,6 +18,7 @@ defmodule KeyLearning.School.Course do
   def changeset(course, attrs) do
     course
     |> cast(attrs, [:name, :image_path])
+    |> cast_assoc(:lectures, with: &Lecture.changeset/2)
     |> validate_required([:name, :image_path])
   end
 end
