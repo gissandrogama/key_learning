@@ -101,7 +101,7 @@ defmodule KeyLearningWeb.Router do
   end
 
   scope "/", KeyLearningWeb do
-    pipe_through [:browser, :require_authenticated_user, :admin]
+    pipe_through [:browser, :require_authenticated_user, :user]
     live "/course", CourseLive, :index
   end
 end

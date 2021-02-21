@@ -1,12 +1,15 @@
 defmodule KeyLearning.School.Course do
   use Ecto.Schema
   import Ecto.Changeset
+  alias KeyLearning.School.Lecture
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "courses" do
     field :image_path, :string
     field :name, :string
+
+    has_many :lectures, Lecture
 
     timestamps()
   end
