@@ -2,35 +2,38 @@
   <header>
     <nav>
       <div class="header">
-        <p>back</p>
-        <h1>elx</h1>
-        <p>h</p>
+        <p>
+          <%= live_redirect to: Routes.category_path(@socket, :index) do %>
+          <i class="fas fa-backward"></i>
+          <% end %>
+        </p>
+        <h1>ElxPro-Learning</h1>
+        <p><i class="fas fa-power-off"></i></p>
       </div>
 
       <form action="">
-        <input type="search"
-               name="search"
-               value="<%= @search %>"
-               placeholder="Type to find a course">
+        <input type="search" name="search" value=" " placeholder="Type to find a course">
       </form>
     </nav>
   </header>
 
   <main>
     <h3>
-      <span>Elixir basic topics</span>
-      <p>20 lessons</p>
+      <span><%= @course.name %></span>
+      <p><%= length(@course.lectures) %> lessons</p>
     </h3>
 
     <section class="lessons">
-      <div class="lesson">
-        <span>Types in Elixir</span>
-        <br />
-        <div class="lesson-info">
-          <p>Class 1</p>
-          <p>40 min</p>
-        </div>
+      <%= for {lecture, index} <- @course.lectures |> Enum.with_index() do %>
+      <%= live_redirect to: Routes.lesson_path(@socket, :index, lecture.id), class: "lesson" do %>
+      <span><%= lecture.name %></span>
+      <br />
+      <div class="lesson-info">
+        <p>Class <%= index + 1 %></p>
+        <p><%= lecture.duration %> min</p>
       </div>
+      <% end %>
+      <% end %>
     </section>
   </main>
 </div>

@@ -4,6 +4,8 @@ defmodule KeyLearningWeb.CategoryLive do
 
   @impl true
   def mount(_params, _session, socket) do
+    if connected?(socket), do: School.subscribe()
+
     {:ok,
      socket
      |> assign(
@@ -28,6 +30,11 @@ defmodule KeyLearningWeb.CategoryLive do
   def handle_event("search", %{"search" => search}, socket) do
     send(self(), {:search_filter, search})
     {:noreply, socket |> assign(courses: [], search: search, matches: [], loading: true)}
+  end
+
+  @impl true
+  def handle_info({:course_created, course}, socket) do
+    {:noreply, socket |> update(:courses, &[course | &1])}
   end
 
   @impl true

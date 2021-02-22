@@ -4,8 +4,14 @@ $color3: #ca48f6;
 $color4: #f8ae6b;
 $color5: #fcfcfc;
 
+a {
+  text-decoration: none;
+  color: white;
+}
+
 @import "courses";
 @import "lessons";
+@import "lesson";
 @import "global";
 @import "../node_modules/nprogress/nprogress.css";
 

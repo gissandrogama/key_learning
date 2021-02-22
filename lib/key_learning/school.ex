@@ -52,7 +52,7 @@ defmodule KeyLearning.School do
       ** (Ecto.NoResultsError)
 
   """
-  def get_course!(id), do: Repo.get!(Course, id)
+  def get_course!(id), do: Repo.get!(Course, id) |> Repo.preload(:lectures)
 
   @doc """
   Creates a course.
@@ -77,6 +77,7 @@ defmodule KeyLearning.School do
 
   defp broadcast({:error, _} = error, _), do: error
   defp broadcast({:ok, course}, event) do
+    course = course |> Repo.preload(:lectures) |> Map.update!(:lectures, &(&1 |> Enum.count()))
     Phoenix.PubSub.broadcast!(KeyLearning.PubSub, "course_created", {event, course})
     {:ok, course}
   end

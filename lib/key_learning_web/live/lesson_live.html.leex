@@ -1,0 +1,29 @@
+<div class="content-lecture">
+  <header>
+    <nav>
+      <div class="header">
+        <p>
+          <%= live_redirect to: Routes.course_path(@socket, :index, @lecture.course_id) do %>
+          <i class="fas fa-backward"></i>
+          <% end %>
+        </p>
+        <h1>ElxPro-Learning</h1>
+        <p><i class="fas fa-power-off"></i></p>
+      </div>
+
+      <form action="">
+        <input type="search" name="search" value=" " placeholder="Type to find a course">
+      </form>
+    </nav>
+  </header>
+
+  <main class="content-lesson">
+    <div class="lesson-info">
+      <iframe with="100%" heigth="345" src="<%= @lecture.video_url%>"></iframe>
+    </div>
+
+    <h3><%= @lecture.name %> <i class="far fa-clock"></i> <%= @lecture.duration %> min</h3>
+    <h4><%= @lecture.name %></h4>
+
+  </main>
+</div>
