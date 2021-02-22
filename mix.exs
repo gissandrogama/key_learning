@@ -50,7 +50,8 @@ defmodule KeyLearning.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:phx_gen_auth, "~> 0.6", only: [:dev], runtime: false},
       {:guardian, "~> 2.0"},
-      {:ecto_enum, "~> 1.4"}
+      {:ecto_enum, "~> 1.4"},
+      {:plug, "~> 1.10.0"}
     ]
   end
 

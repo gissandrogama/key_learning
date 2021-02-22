@@ -2,46 +2,46 @@
   <header>
     <nav>
       <div class="header">
-        <p>back</p>
-        <h1>elx</h1>
-        <p>h</p>
+        <p><i class="fas fa-backward"></i></p>
+        <h1>ElxPro-Learning</h1>
+        <p><i class="fas fa-power-off"></i></p>
       </div>
 
-      <form action="">
-        <input type="search" placeholder="Type to find a course">
+      <form action="" phx-submit="search" phx-change="options-available">
+        <input type="search"
+               name="search"
+               value="<%= @search %>"
+               autocomplete="off"
+               list="matches"
+               <%= if @loading, do: "readonly" %>
+               placeholder="Type to find a course">
       </form>
     </nav>
   </header>
 
+  <datalist id="matches">
+    <%= for match <- @matches do %>
+      <option value="<%= match %>"><%= match %></option>
+    <% end %>
+  </datalist>
+
   <main>
     <h3>
       <span>Categories</span>
-      <p>30 courses</p>
+      <p><%= length(@courses) %> courses</p>
     </h3>
 
+    <%= if @loading do %>
+      loading courses ...
+    <% end %>
     <section class="categories">
-      <div class="category">
-        <img src="<%= Routes.static_path(@socket, "/images/elx.svg") %>" alt="Elixir basic topics">
-        <span>Elixir basic topics</span>
-        <p>20 lessons</p>
-      </div>
-      <div class="category">
-        <img src="<%= Routes.static_path(@socket, "/images/elx.svg") %>" alt="Elixir basic topics">
-        <span>Elixir basic topics</span>
-        <p>20 lessons</p>
-      </div>
-
-      <div class="category">
-        <img src="<%= Routes.static_path(@socket, "/images/elx.svg") %>" alt="Elixir basic topics">
-        <span>Elixir basic topics</span>
-        <p>20 lessons</p>
-      </div>
-
-      <div class="category">
-        <img src="<%= Routes.static_path(@socket, "/images/elx.svg") %>" alt="Elixir basic topics">
-        <span>Elixir basic topics</span>
-        <p>20 lessons</p>
-      </div>
+    <%= for course <- @courses do %>
+    <%= live_redirect to: Routes.course_path(@socket, :index, course.id), class: "category" do %>
+        <img src="<%= course.image_path %>" alt="<%= course.name %>">
+        <span><%= course.name %></span>
+        <p><%= course.lectures %> lessons</p>
+      <% end %>
+      <% end %>
     </section>
   </main>
 </div>

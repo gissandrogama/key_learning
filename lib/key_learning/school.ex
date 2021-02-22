@@ -7,6 +7,7 @@ defmodule KeyLearning.School do
   alias KeyLearning.Repo
 
   alias KeyLearning.School.Course
+  alias KeyLearning.School.Lecture
 
   @doc """
   Returns the list of courses.
@@ -18,7 +19,28 @@ defmodule KeyLearning.School do
 
   """
   def list_courses do
-    Repo.all(Course)
+    query =
+      from c in Course,
+        join: l in Lecture,
+        on: c.id == l.course_id,
+        group_by: c.id,
+        select: %{c | lectures: count(l.id)}
+
+    Repo.all(query)
+  end
+
+  def list_courses(search) do
+    search = "%#{search}%"
+
+    query =
+      from c in Course,
+        join: l in Lecture,
+        on: c.id == l.course_id,
+        group_by: c.id,
+        where: ilike(c.name, ^search),
+        select: %{c | lectures: count(l.id)}
+
+    Repo.all(query)
   end
 
   @doc """
@@ -35,7 +57,7 @@ defmodule KeyLearning.School do
       ** (Ecto.NoResultsError)
 
   """
-  def get_course!(id), do: Repo.get!(Course, id)
+  def get_course!(id), do: Repo.get!(Course, id) |> Repo.preload(:lectures)
 
   @doc """
   Creates a course.
@@ -53,6 +75,17 @@ defmodule KeyLearning.School do
     %Course{}
     |> Course.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:course_created)
+  end
+
+  def subscribe, do: Phoenix.PubSub.subscribe(KeyLearning.PubSub, "course_created")
+
+  defp broadcast({:error, _} = error, _), do: error
+
+  defp broadcast({:ok, course}, event) do
+    course = course |> Repo.preload(:lectures) |> Map.update!(:lectures, &(&1 |> Enum.count()))
+    Phoenix.PubSub.broadcast!(KeyLearning.PubSub, "course_created", {event, course})
+    {:ok, course}
   end
 
   @doc """

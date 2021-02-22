@@ -1,0 +1,22 @@
+.content-lecture {
+  width: 100vw;
+  height: 100vh;
+  background: $color5;
+
+  @import "courses/header";
+
+  .content-lesson{
+    margin-top: -2rem;
+    background: $color5;
+    border-radius: 2.4rem 2.4rem 0 0;
+
+    .lesson-info {
+      margin: auto;
+      iframe {
+        border-radius: 2.4rem 2.4rem 0 0;
+        border: 0;
+        width: 100%;
+      }
+    }
+  }
+}
