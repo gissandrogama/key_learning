@@ -19,22 +19,27 @@ defmodule KeyLearning.School do
 
   """
   def list_courses do
-    query = from c in Course,
-            join: l in Lecture,
-            on: c.id == l.course_id,
-            group_by: c.id,
-            select: %{c | lectures: count(l.id)}
+    query =
+      from c in Course,
+        join: l in Lecture,
+        on: c.id == l.course_id,
+        group_by: c.id,
+        select: %{c | lectures: count(l.id)}
+
     Repo.all(query)
   end
 
   def list_courses(search) do
     search = "%#{search}%"
-    query = from c in Course,
-            join: l in Lecture,
-            on: c.id == l.course_id,
-            group_by: c.id,
-            where: ilike(c.name, ^search),
-            select: %{c | lectures: count(l.id)}
+
+    query =
+      from c in Course,
+        join: l in Lecture,
+        on: c.id == l.course_id,
+        group_by: c.id,
+        where: ilike(c.name, ^search),
+        select: %{c | lectures: count(l.id)}
+
     Repo.all(query)
   end
 
@@ -76,6 +81,7 @@ defmodule KeyLearning.School do
   def subscribe, do: Phoenix.PubSub.subscribe(KeyLearning.PubSub, "course_created")
 
   defp broadcast({:error, _} = error, _), do: error
+
   defp broadcast({:ok, course}, event) do
     course = course |> Repo.preload(:lectures) |> Map.update!(:lectures, &(&1 |> Enum.count()))
     Phoenix.PubSub.broadcast!(KeyLearning.PubSub, "course_created", {event, course})
